@@ -3,8 +3,9 @@ import React from "react";
 export type RouteType = {
   id: string;
   path: string;
-  icon?: JSX.Element;
+  name: string;
   children: null | Array<RouteChildType>;
+  icon?: JSX.Element;
   component: React.ComponentClass<any> | null;
   badge?: string | number;
   containsHome?: boolean;

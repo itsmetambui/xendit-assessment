@@ -2,7 +2,7 @@ import React from "react";
 
 import async from "../components/Async";
 
-import { Users } from "react-feather";
+import { Sliders, Users } from "react-feather";
 
 // Guards
 const AuthGuard = async(() => import("../components/AuthGuard"));
@@ -28,6 +28,7 @@ export enum routes {
 
 const authRoutes = {
   id: "Auth",
+  name: "Auth",
   path: routes.AUTH,
   icon: <Users />,
   children: [
@@ -61,9 +62,20 @@ const authRoutes = {
 const protectedPageRoutes = {
   id: "home",
   path: routes.HOME,
+  name: "Home",
   component: HomePage,
   children: null,
   guard: AuthGuard,
+};
+
+const dashboardsRoutes = {
+  id: "Home",
+  path: routes.HOME,
+  icon: <Sliders />,
+  name: "Home",
+  containsHome: true,
+  component: HomePage,
+  children: null,
 };
 
 // Routes using the Auth layout
@@ -73,4 +85,4 @@ export const authLayoutRoutes = [authRoutes];
 export const protectedRoutes = [protectedPageRoutes];
 
 // Routes visible in the sidebar
-export const sidebarRoutes = [];
+export const sidebarRoutes = [dashboardsRoutes];

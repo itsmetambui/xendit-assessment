@@ -3,13 +3,12 @@ import styled from "styled-components/macro";
 import { rgba } from "polished";
 import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
 import { darken } from "polished";
-import { RouteType, RouteChildType } from "../types/routes";
+import { RouteType } from "../types/routes";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
 
 import {
   Chip,
-  Collapse,
   Drawer as MuiDrawer,
   List as MuiList,
   ListItem,
@@ -336,55 +335,14 @@ const Sidebar: React.FC<RouteComponentProps & SidebarPropsType> = ({
       <Scrollbar>
         <List disablePadding>
           <Items>
-            {routes.map((category: RouteType, index) => (
-              <React.Fragment key={index}>
-                {category.header ? (
-                  <SidebarSection>{category.header}</SidebarSection>
-                ) : null}
-
-                {category.children && category.icon ? (
-                  <React.Fragment key={index}>
-                    <SidebarCategory
-                      isOpen={!openRoutes[index]}
-                      isCollapsable={true}
-                      name={category.id}
-                      icon={category.icon}
-                      button={true}
-                      onClick={() => toggle(index)}
-                    />
-
-                    <Collapse
-                      in={openRoutes[index]}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      {category.children.map(
-                        (route: RouteChildType, index: number) => (
-                          <SidebarLink
-                            key={index}
-                            name={route.name}
-                            to={route.path}
-                            icon={route.icon}
-                            badge={route.badge}
-                          />
-                        )
-                      )}
-                    </Collapse>
-                  </React.Fragment>
-                ) : category.icon ? (
-                  <SidebarCategory
-                    isCollapsable={false}
-                    name={category.id}
-                    to={category.path}
-                    activeClassName="active"
-                    component={NavLink}
-                    icon={category.icon}
-                    exact
-                    button
-                    badge={category.badge}
-                  />
-                ) : null}
-              </React.Fragment>
+            {routes.map((route: RouteType, index) => (
+              <SidebarLink
+                key={index}
+                name={route.name}
+                to={route.path}
+                icon={route.icon}
+                badge={route.badge}
+              />
             ))}
           </Items>
         </List>

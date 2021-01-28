@@ -13,13 +13,14 @@ const UniversityQueryContext = React.createContext<{
 const UniversityQueryProvider = (props: Object) => {
   const location = useLocation();
   const history = useHistory();
+  console.log(location.pathname);
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleUniversitiesSearch = (term: string) => {
     setSearchTerm(term);
-    // if (location.pathname !== routes.HOME) {
-    //   history.push(routes.HOME);
-    // }
+    if (location.pathname !== routes.HOME) {
+      history.push(routes.HOME);
+    }
   };
 
   return (
