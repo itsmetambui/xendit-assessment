@@ -8,11 +8,16 @@ import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
 import { routes } from "../../routes";
 import { searchUniversities } from "../../utils/api";
+import { useUniversityQuery } from "../../contexts/UniversityQueryContext";
+import { useDebounce } from "../../utils/hooks";
 
-function ProtectedPage() {
+function HomePage() {
+  const { searchTerm } = useUniversityQuery();
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const { data: universities = [], isLoading, error } = useQuery<University[]>(
-    "universities",
-    () => searchUniversities("", "Vietnam")
+    ["universities", debouncedSearchTerm],
+    () => searchUniversities(debouncedSearchTerm, "Turkey")
   );
 
   if (error) {
@@ -50,4 +55,4 @@ function ProtectedPage() {
   );
 }
 
-export default ProtectedPage;
+export default HomePage;

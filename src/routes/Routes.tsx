@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  RouteComponentProps,
-} from "react-router-dom";
+import { Route, Switch, RouteComponentProps } from "react-router-dom";
 import { authLayoutRoutes, protectedRoutes } from "./index";
 
 import DashboardLayout from "../layouts/Dashboard";
@@ -54,19 +49,17 @@ const childRoutes = (Layout: React.ElementType, routes: Array<RouteType>) =>
   );
 
 const Routes = () => (
-  <Router>
-    <Switch>
-      {childRoutes(DashboardLayout, protectedRoutes)}
-      {childRoutes(AuthLayout, authLayoutRoutes)}
-      <Route
-        render={() => (
-          <AuthLayout>
-            <Page404 />
-          </AuthLayout>
-        )}
-      />
-    </Switch>
-  </Router>
+  <Switch>
+    {childRoutes(DashboardLayout, protectedRoutes)}
+    {childRoutes(AuthLayout, authLayoutRoutes)}
+    <Route
+      render={() => (
+        <AuthLayout>
+          <Page404 />
+        </AuthLayout>
+      )}
+    />
+  </Switch>
 );
 
 export default Routes;

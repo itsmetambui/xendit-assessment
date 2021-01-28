@@ -2,6 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import DateFnsUtils from "@date-io/date-fns";
 import { SnackbarProvider } from "notistack";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { ThemeProvider } from "styled-components/macro";
 import { create } from "jss";
@@ -17,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import theme from "./theme";
 import Routes from "./routes/Routes";
 import { AuthProvider } from "./contexts/AuthContext";
+import { UniversityQueryProvider } from "./contexts/UniversityQueryContext";
 
 const jss = create({
   ...jssPreset(),
@@ -36,7 +38,11 @@ function App() {
               <QueryClientProvider client={queryClient}>
                 <SnackbarProvider maxSnack={3}>
                   <AuthProvider>
-                    <Routes />
+                    <Router>
+                      <UniversityQueryProvider>
+                        <Routes />
+                      </UniversityQueryProvider>
+                    </Router>
                   </AuthProvider>
                 </SnackbarProvider>
               </QueryClientProvider>

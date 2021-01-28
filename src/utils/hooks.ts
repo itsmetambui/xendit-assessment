@@ -1,6 +1,6 @@
 import * as React from "react";
 
-function useSafeDispatch(dispatch: Function) {
+const useSafeDispatch = (dispatch: Function) => {
   const mounted = React.useRef(false);
   React.useLayoutEffect(() => {
     mounted.current = true;
@@ -12,7 +12,7 @@ function useSafeDispatch(dispatch: Function) {
     (...args) => (mounted.current ? dispatch(...args) : void 0),
     [dispatch]
   );
-}
+};
 
 export enum UseAsyncStatus {
   IDLE,
@@ -31,7 +31,7 @@ const defaultInitialState = {
   data: null,
   error: null,
 };
-function useAsync(initialState?: Object) {
+const useAsync = (initialState?: Object) => {
   const initialStateRef = React.useRef({
     ...defaultInitialState,
     ...(initialState || {}),
@@ -95,6 +95,22 @@ function useAsync(initialState?: Object) {
     run,
     reset,
   };
-}
+};
 
-export { useAsync };
+const useDebounce = (value: any, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
+export { useAsync, useDebounce };

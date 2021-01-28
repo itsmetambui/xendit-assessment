@@ -15,6 +15,8 @@ import {
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import LogoutButton from "./LogoutButton";
+import Logo from "./Logo";
+import { useUniversityQuery } from "../contexts/UniversityQueryContext";
 
 const AppBar = styled(MuiAppBar)`
   background: ${(props) => props.theme.header.background};
@@ -78,38 +80,52 @@ type AppBarProps = {
   onDrawerToggle: React.MouseEventHandler<HTMLElement>;
 };
 
-const AppBarComponent: React.FC<AppBarProps> = ({ onDrawerToggle }) => (
-  <React.Fragment>
-    <AppBar position="sticky" elevation={0}>
-      <Toolbar>
-        <Grid container alignItems="center">
-          <Hidden mdUp>
-            <Grid item>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={onDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-            </Grid>
-          </Hidden>
-          <Grid item>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <Input placeholder="Search universities" />
-            </Search>
-          </Grid>
-          <Grid item xs />
-          <Grid item>
-            <LogoutButton />
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
-  </React.Fragment>
-);
+const AppBarComponent: React.FC<AppBarProps> = ({ onDrawerToggle }) => {
+  const { searchTerm, handleUniversitiesSearch } = useUniversityQuery();
 
+  return (
+    <React.Fragment>
+      <AppBar position="sticky" elevation={0}>
+        <Toolbar>
+          <Grid container alignItems="center">
+            <Hidden mdUp>
+              <Grid item>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={onDrawerToggle}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Grid>
+            </Hidden>
+            <Hidden xsDown>
+              <Grid item>
+                <Logo height={24} />
+              </Grid>
+              <Grid item xs />
+            </Hidden>
+
+            <Grid item>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <Input
+                  placeholder="Search universities"
+                  value={searchTerm}
+                  onChange={(e) => handleUniversitiesSearch(e.target.value)}
+                />
+              </Search>
+            </Grid>
+            <Grid item xs />
+            <Grid item>
+              <LogoutButton />
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </React.Fragment>
+  );
+};
 export default withTheme(AppBarComponent);
