@@ -1,8 +1,8 @@
 import { AxiosInstance } from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import { AuthResponse } from "../types/auth";
-import { User } from "../types/user";
-import axios from "../utils/axios/axios";
+import { AuthResponse } from "../../types/auth";
+import { User } from "../../types/user";
+import axios from "./axios";
 
 const userData: User = {
   id: "12345",

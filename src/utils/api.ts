@@ -5,10 +5,10 @@ import {
   AxiosResponse,
 } from "axios";
 import MockAdapter from "axios-mock-adapter/types";
-import { applyMocks } from "../mocks/authMock";
 import { LoginRequest, RegisterRequest, AuthResponse } from "../types/auth";
 import { University } from "../types/university";
 import { getToken } from "./auth";
+import { applyMocks } from "./axios/applyMocks";
 import axios from "./axios/axios";
 import hippoAxios from "./axios/hippoAxios";
 import endPoints from "./endpoints";
