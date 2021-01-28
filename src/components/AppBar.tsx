@@ -2,6 +2,7 @@ import * as React from "react";
 import styled, { withTheme } from "styled-components/macro";
 import { darken } from "polished";
 import { Search as SearchIcon } from "react-feather";
+import { NavLink } from "react-router-dom";
 
 import {
   Grid,
@@ -17,6 +18,8 @@ import { Menu as MenuIcon } from "@material-ui/icons";
 import LogoutButton from "./LogoutButton";
 import Logo from "./Logo";
 import { useUniversityQuery } from "../contexts/UniversityQueryContext";
+import { navbarRoutes } from "../routes";
+import { RouteType } from "../types/routes";
 
 const AppBar = styled(MuiAppBar)`
   background: ${(props) => props.theme.header.background};
@@ -75,6 +78,16 @@ const Input = styled(InputBase)`
   }
 `;
 
+const Link = styled(NavLink)`
+  color: white;
+  padding-right: ${(props) => props.theme.spacing(2.5)}px;
+  padding-left: ${(props) => props.theme.spacing(2.5)}px;
+
+  .active {
+    font-weight: bold;
+  }
+`;
+
 type AppBarProps = {
   theme: {};
   onDrawerToggle: React.MouseEventHandler<HTMLElement>;
@@ -120,6 +133,11 @@ const AppBarComponent: React.FC<AppBarProps> = ({ onDrawerToggle }) => {
             </Grid>
             <Grid item xs />
             <Grid item>
+              {navbarRoutes.map((route: RouteType) => (
+                <Link key={route.path} to={route.path}>
+                  {route.name}
+                </Link>
+              ))}
               <LogoutButton />
             </Grid>
           </Grid>

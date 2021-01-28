@@ -21,7 +21,7 @@ function HomePage() {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const { data: universities = [], isLoading, error } = useQuery<University[]>(
     ["universities", debouncedSearchTerm],
-    () => searchUniversities(debouncedSearchTerm, "Turkey")
+    () => searchUniversities(debouncedSearchTerm, "")
   );
 
   if (error) {

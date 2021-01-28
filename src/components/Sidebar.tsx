@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { rgba } from "polished";
 import { NavLink, withRouter, RouteComponentProps } from "react-router-dom";
@@ -13,12 +13,9 @@ import {
   List as MuiList,
   ListItem,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
 
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
-
-import { sidebarRoutes as routes } from "../routes/index";
+import { navbarRoutes as routes } from "../routes/index";
 import Logo from "./Logo";
 
 const Drawer = styled(MuiDrawer)`
@@ -66,61 +63,6 @@ const Brand = styled(ListItem)<{
   &:hover {
     background-color: ${(props) => props.theme.sidebar.header.background};
   }
-`;
-
-type CategoryType = {
-  activeClassName?: string;
-  button?: boolean;
-  onClick?: () => void;
-  to?: string;
-  component?: typeof NavLink;
-  exact?: boolean;
-};
-
-const Category = styled(ListItem)<CategoryType>`
-  padding-top: ${(props) => props.theme.spacing(3)}px;
-  padding-bottom: ${(props) => props.theme.spacing(3)}px;
-  padding-left: ${(props) => props.theme.spacing(8)}px;
-  padding-right: ${(props) => props.theme.spacing(7)}px;
-  font-weight: ${(props) => props.theme.typography.fontWeightRegular};
-
-  svg {
-    color: ${(props) => props.theme.sidebar.color};
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    opacity: 0.5;
-  }
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.08);
-  }
-
-  &.${(props) => props.activeClassName} {
-    background-color: ${(props) =>
-      darken(0.03, props.theme.sidebar.background)};
-
-    span {
-      color: ${(props) => props.theme.sidebar.color};
-    }
-  }
-`;
-
-const CategoryText = styled(ListItemText)`
-  margin: 0;
-  span {
-    color: ${(props) => props.theme.sidebar.color};
-    font-size: ${(props) => props.theme.typography.body1.fontSize}px;
-    padding: 0 ${(props) => props.theme.spacing(4)}px;
-  }
-`;
-
-const CategoryIconLess = styled(ExpandLess)`
-  color: ${(props) => rgba(props.theme.sidebar.color, 0.5)};
-`;
-
-const CategoryIconMore = styled(ExpandMore)`
-  color: ${(props) => rgba(props.theme.sidebar.color, 0.5)};
 `;
 
 const Link = styled(ListItem)<{
@@ -183,59 +125,6 @@ const LinkBadge = styled(Chip)`
   }
 `;
 
-const CategoryBadge = styled(LinkBadge)`
-  top: 12px;
-`;
-
-const SidebarSection = styled(Typography)`
-  color: ${(props) => props.theme.sidebar.color};
-  padding: ${(props) => props.theme.spacing(4)}px
-    ${(props) => props.theme.spacing(7)}px
-    ${(props) => props.theme.spacing(1)}px;
-  opacity: 0.9;
-  display: block;
-`;
-
-type SidebarCategoryPropsType = {
-  name: string;
-  icon: JSX.Element;
-  classes?: string;
-  isOpen?: boolean;
-  isCollapsable: boolean;
-  badge?: string | number;
-  activeClassName?: string;
-  button: true;
-  onClick?: () => void;
-  to?: string;
-  component?: typeof NavLink;
-  exact?: boolean;
-};
-
-const SidebarCategory: React.FC<SidebarCategoryPropsType> = ({
-  name,
-  icon,
-  classes,
-  isOpen,
-  isCollapsable,
-  badge,
-  ...rest
-}) => {
-  return (
-    <Category {...rest}>
-      {icon}
-      <CategoryText>{name}</CategoryText>
-      {isCollapsable ? (
-        isOpen ? (
-          <CategoryIconMore />
-        ) : (
-          <CategoryIconLess />
-        )
-      ) : null}
-      {badge ? <CategoryBadge label={badge} /> : ""}
-    </Category>
-  );
-};
-
 type SidebarLinkPropsType = {
   name: string;
   to: string;
@@ -287,46 +176,6 @@ const Sidebar: React.FC<RouteComponentProps & SidebarPropsType> = ({
   location,
   ...rest
 }) => {
-  type tplotOptions = {
-    [key: number]: boolean;
-  };
-  const initOpenRoutes = (): tplotOptions => {
-    /* Open collapse element that matches current url */
-    const pathName = location.pathname;
-
-    let _routes = {};
-
-    routes.forEach((route: RouteType, index) => {
-      const isActive = pathName.indexOf(route.path) === 0;
-      const isOpen = route.open;
-      const isHome = route.containsHome && pathName === "/";
-
-      _routes = Object.assign({}, _routes, {
-        [index]: isActive || isOpen || isHome,
-      });
-    });
-
-    return _routes;
-  };
-
-  const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
-
-  const toggle = (index: number) => {
-    // Collapse all elements
-    Object.keys(openRoutes).forEach(
-      (item) =>
-        openRoutes[index] ||
-        setOpenRoutes((openRoutes) =>
-          Object.assign({}, openRoutes, { [item]: false })
-        )
-    );
-
-    // Toggle selected element
-    setOpenRoutes((openRoutes) =>
-      Object.assign({}, openRoutes, { [index]: !openRoutes[index] })
-    );
-  };
-
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>

@@ -2,7 +2,7 @@ import React from "react";
 
 import async from "../components/Async";
 
-import { Sliders, Users } from "react-feather";
+import { Users } from "react-feather";
 
 // Guards
 const AuthGuard = async(() => import("../components/AuthGuard"));
@@ -14,8 +14,9 @@ const SignUp = async(() => import("../pages/auth/SignUp"));
 const Page404 = async(() => import("../pages/auth/Page404"));
 const Page500 = async(() => import("../pages/auth/Page500"));
 
-// Home page
-const HomePage = async(() => import("../pages/dashboard"));
+// Dashboard pages
+const HomePage = async(() => import("../pages/dashboard/HomePage"));
+const FavoritePage = async(() => import("../pages/dashboard/FavoritePage"));
 
 export enum routes {
   HOME = "/",
@@ -24,6 +25,7 @@ export enum routes {
   SIGNUP = "/auth/sign-up",
   PAGE_ERROR_404 = "/auth/404",
   PAGE_ERROR_500 = "/auth/500",
+  FAVORITE = "/favorite",
 }
 
 const authRoutes = {
@@ -58,31 +60,30 @@ const authRoutes = {
   component: null,
 };
 
-// This route is only visible while signed in
-const protectedPageRoutes = {
-  id: "home",
+const homeRoute = {
+  id: "Home",
   path: routes.HOME,
   name: "Home",
+  containsHome: true,
   component: HomePage,
   children: null,
   guard: AuthGuard,
 };
 
-const dashboardsRoutes = {
-  id: "Home",
-  path: routes.HOME,
-  icon: <Sliders />,
-  name: "Home",
-  containsHome: true,
-  component: HomePage,
+const favoriteRoute = {
+  id: "Favorite",
+  path: routes.FAVORITE,
+  name: "Favorite",
+  component: FavoritePage,
   children: null,
+  guard: AuthGuard,
 };
 
 // Routes using the Auth layout
 export const authLayoutRoutes = [authRoutes];
 
 // Routes that are protected
-export const protectedRoutes = [protectedPageRoutes];
+export const protectedRoutes = [homeRoute, favoriteRoute];
 
 // Routes visible in the sidebar
-export const sidebarRoutes = [dashboardsRoutes];
+export const navbarRoutes = [homeRoute, favoriteRoute];
