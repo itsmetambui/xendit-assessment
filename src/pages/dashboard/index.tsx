@@ -1,17 +1,51 @@
 import React from "react";
-import styled from "styled-components/macro";
 
-import { Alert as MuiAlert } from "@material-ui/lab";
-import { spacing } from "@material-ui/system";
-
-const Alert = styled(MuiAlert)(spacing);
+import { CircularProgress, Grid } from "@material-ui/core";
+import UniversityCard from "../../components/UniversityCard";
+import { useQuery } from "react-query";
+import { University } from "../../types/university";
+import { v4 as uuidv4 } from "uuid";
+import { Redirect } from "react-router-dom";
+import { routes } from "../../routes";
+import { searchUniversities } from "../../utils/api";
 
 function ProtectedPage() {
-  return (
+  const { data: universities = [], isLoading, error } = useQuery<University[]>(
+    "universities",
+    () => searchUniversities("", "Vietnam")
+  );
+
+  if (error) {
+    return <Redirect to={routes.PAGE_ERROR_500} />;
+  }
+
+  return isLoading ? (
+    <CircularProgress />
+  ) : (
     <React.Fragment>
-      <Alert mb={4} severity="info">
-        This page is only visible by authenticated users.
-      </Alert>
+      <Grid container spacing={3}>
+        {universities.map(
+          ({ name, websites, domains, country, countryCode, state }) => {
+            return (
+              <Grid
+                item
+                xs={6}
+                sm={3}
+                key={`${name}-${countryCode}-${uuidv4()}`}
+              >
+                <UniversityCard
+                  name={name}
+                  state={state}
+                  country={country}
+                  countryCode={countryCode}
+                  websites={websites}
+                  domains={domains}
+                />
+              </Grid>
+            );
+          }
+        )}
+      </Grid>
     </React.Fragment>
   );
 }
