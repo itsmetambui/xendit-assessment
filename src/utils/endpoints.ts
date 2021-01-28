@@ -14,6 +14,11 @@ const endPoints = {
   login: () => "api/auth/sign-in",
   register: () => "api/auth/sign-up",
   getCurrentUser: () => "api/users/me",
+  searchUniversities: (name: string, country: string) =>
+    `search${makeQueryString({
+      name,
+      country,
+    })}`,
 };
 
 export default endPoints;

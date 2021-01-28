@@ -1,6 +1,6 @@
 import axios from "axios";
 import { QueryCache } from "react-query";
-import { clearAuthKeys } from "./auth";
+import { clearAuthKeys } from "../auth";
 
 const UNAUTHORIZED = 401;
 

@@ -1,7 +1,16 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
+import MockAdapter from "axios-mock-adapter/types";
+import { applyMocks } from "../mocks/authMock";
 import { LoginRequest, RegisterRequest, AuthResponse } from "../types/auth";
+import { University } from "../types/university";
 import { getToken } from "./auth";
-import axios from "./axios";
+import axios from "./axios/axios";
+import hippoAxios from "./axios/hippoAxios";
 import endPoints from "./endpoints";
 
 type Option = {
@@ -10,12 +19,27 @@ type Option = {
   withAuth?: boolean;
 };
 
-export const fetcher = async <T>(
-  url: string,
-  options: AxiosRequestConfig
-): Promise<T> =>
+let mock: MockAdapter;
+
+export const fetcher = async <T>({
+  url,
+  options,
+  withMock = true,
+  instance = axios,
+}: {
+  url: string;
+  options: AxiosRequestConfig;
+  withMock?: boolean;
+  instance?: AxiosInstance;
+}): Promise<T> =>
   new Promise((resolve, reject) => {
-    axios({
+    if (withMock) {
+      mock = applyMocks();
+    } else {
+      mock.restore();
+    }
+
+    instance({
       url,
       ...options,
     })
@@ -56,28 +80,38 @@ export const makeOptions = ({
 };
 
 export const loginApi = async (payload: LoginRequest) =>
-  fetcher<AuthResponse>(
-    endPoints.login(),
-    makeOptions({
+  fetcher<AuthResponse>({
+    url: endPoints.login(),
+    options: makeOptions({
       method: "POST",
       payload,
-    })
-  );
+    }),
+  });
 
 export const registerApi = async (payload: RegisterRequest) =>
-  fetcher<AuthResponse>(
-    endPoints.register(),
-    makeOptions({
+  fetcher<AuthResponse>({
+    url: endPoints.register(),
+    options: makeOptions({
       method: "POST",
       payload,
-    })
-  );
+    }),
+  });
 
 export const getCurrentuser = async () =>
-  fetcher<AuthResponse>(
-    endPoints.getCurrentUser(),
-    makeOptions({
+  fetcher<AuthResponse>({
+    url: endPoints.getCurrentUser(),
+    options: makeOptions({
       method: "GET",
       withAuth: true,
-    })
-  );
+    }),
+  });
+
+export const searchUniversities = async (name: string, country: string) =>
+  fetcher<University[]>({
+    url: endPoints.searchUniversities(name, country),
+    options: makeOptions({
+      method: "GET",
+    }),
+    withMock: false,
+    instance: hippoAxios,
+  });
