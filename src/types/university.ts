@@ -1,8 +1,8 @@
 export type University = {
   name: string;
-  websites: string[];
+  web_pages: string[];
   domains: string[];
   country: string;
-  countryCode: string;
+  alpha_two_code: string;
   state?: string;
 };

@@ -8,26 +8,29 @@ import {
   Button as MuiButton,
   Card as MuiCard,
   Typography,
+  Grid,
+  Box,
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
 import { v4 as uuidv4 } from "uuid";
-import { University } from "../types/university";
 
 const Card = styled(MuiCard)(spacing);
 const Button = styled(MuiButton)(spacing);
 
 const GUTTER_SIZE = 16;
 
-const UniversityCard: FC<University & { style: React.CSSProperties }> = ({
-  name,
-  websites = [],
-  domains = [],
-  country,
-  countryCode,
-  state,
-  style,
-}) => {
+type UniversityCardType = {
+  name: string;
+  websites: string[];
+  domains: string[];
+  country: string;
+  state?: string;
+};
+
+const UniversityCard: FC<
+  UniversityCardType & { style: React.CSSProperties }
+> = ({ name, websites = [], domains = [], country, state, style }) => {
   return (
     <Card
       mb={6}
@@ -42,22 +45,36 @@ const UniversityCard: FC<University & { style: React.CSSProperties }> = ({
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {name} - {countryCode}
+            {name}
           </Typography>
-          <Typography component="p">
+          <Typography component="p" variant="body2">
             {state && <Typography component="span">{state} - </Typography>}
             <Typography component="span">{country}</Typography>
           </Typography>
-          {websites.map((website) => (
-            <Typography key={`${website}-${uuidv4()}`} component="p">
-              {website}
-            </Typography>
-          ))}
-          {domains.map((domain) => (
-            <Typography key={`${domain}-${uuidv4()}`} component="p">
-              {domain}
-            </Typography>
-          ))}
+          <Box mt={4}>
+            <Grid container justify="space-between">
+              <Grid item xs={6}>
+                <Typography component="p" variant="subtitle2">
+                  Domains
+                </Typography>
+                {domains.map((domain) => (
+                  <Typography key={`${domain}-${uuidv4()}`} component="p">
+                    {domain}
+                  </Typography>
+                ))}
+              </Grid>
+              <Grid item xs={6}>
+                <Typography component="p" variant="subtitle2">
+                  Websites
+                </Typography>
+                {websites.map((website) => (
+                  <Typography key={`${website}-${uuidv4()}`} component="p">
+                    {website}
+                  </Typography>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
         </CardContent>
       </CardActionArea>
       <CardActions>

@@ -3,7 +3,9 @@ import React from "react";
 import Autosizer from "react-virtualized-auto-sizer";
 import { FixedSizeGrid } from "react-window";
 import { Redirect } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { v4 as uuidv4 } from "uuid";
 
 import UniversityCard from "../../components/UniversityCard";
 import { useQuery } from "react-query";
@@ -21,14 +23,38 @@ function HomePage() {
     ["universities", debouncedSearchTerm],
     () => searchUniversities(debouncedSearchTerm, "Turkey")
   );
-  console.log(universities.length);
 
   if (error) {
     return <Redirect to={routes.PAGE_ERROR_500} />;
   }
 
   return isLoading ? (
-    <CircularProgress />
+    <Grid container spacing={6}>
+      {new Array(16).fill(true).map(() => (
+        <Grid key={uuidv4()} item xs={1} sm={2} md={3}>
+          <Skeleton variant="rect" animation="wave" height={160} width="100%" />
+          <Box pt={0.5}>
+            <Skeleton />
+            <Skeleton width="60%" />
+          </Box>
+        </Grid>
+      ))}
+    </Grid>
+  ) : universities.length === 0 ? (
+    <Grid
+      style={{ height: "100%" }}
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <Typography variant="h1" component="p">
+        There's no matched
+      </Typography>
+      <Typography variant="body2" component="p">
+        Please try again with a different search term
+      </Typography>
+    </Grid>
   ) : (
     <Autosizer>
       {({ height, width }: { height: number; width: number }) => (
@@ -38,13 +64,21 @@ function HomePage() {
           height={height}
           rowCount={Math.ceil(universities.length / numberOfColumns)}
           overscanRowCount={3}
-          rowHeight={164}
+          rowHeight={192}
           width={width}
         >
           {({ columnIndex, rowIndex, style }) => {
             const id = rowIndex * 4 + columnIndex - rowIndex;
-            return universities[id] ? (
-              <UniversityCard {...universities[id]} style={style} />
+            const university = universities[id];
+            return university ? (
+              <UniversityCard
+                name={university.name}
+                country={university.country}
+                state={university.state}
+                websites={university.web_pages}
+                domains={university.domains}
+                style={style}
+              />
             ) : null;
           }}
         </FixedSizeGrid>
