@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@material-ui/core";
 
 const useSafeDispatch = (dispatch: Function) => {
   const mounted = React.useRef(false);
@@ -113,4 +115,24 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-export { useAsync, useDebounce };
+const useResponsiveColumns = () => {
+  const theme = useTheme();
+  const LG = useMediaQuery(theme.breakpoints.up("lg"));
+  const MD = useMediaQuery(theme.breakpoints.up("md"));
+  const SM = useMediaQuery(theme.breakpoints.up("sm"));
+  const XS = useMediaQuery(theme.breakpoints.up("xs"));
+
+  if (LG) {
+    return 4;
+  } else if (MD) {
+    return 3;
+  } else if (SM) {
+    return 2;
+  } else if (XS) {
+    return 1;
+  } else {
+    return 1;
+  }
+};
+
+export { useAsync, useDebounce, useResponsiveColumns };
