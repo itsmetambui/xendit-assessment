@@ -1,6 +1,6 @@
 /// <reference path="../support/index.d.ts" />
 
-describe("", () => {
+describe("login", () => {
   it("should login success", () => {
     cy.signin();
     cy.url().should("eq", Cypress.config().baseUrl + "/");
@@ -12,6 +12,6 @@ describe("", () => {
     cy.findByLabelText("Password *").type("wrong-password");
 
     cy.findByText(/sign in/i, { selector: "span" }).click();
-    cy.findByText(/Auth with provided credentials failed/i).should("exist");
+    cy.findByText(/Please check your email and password/i).should("exist");
   });
 });

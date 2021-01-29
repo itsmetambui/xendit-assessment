@@ -30,11 +30,6 @@ function SignUp() {
     errors,
     formState: { isSubmitting },
   } = useForm({
-    defaultValues: {
-      email: "hello@xendit.com",
-      password: "",
-      confirmPassword: "",
-    },
     resolver: yupResolver(registerSchema),
   });
 

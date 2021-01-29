@@ -27,10 +27,6 @@ function SignIn() {
     errors,
     formState: { isSubmitting },
   } = useForm({
-    defaultValues: {
-      email: "hello@xendit.com",
-      password: "unsafepassword",
-    },
     resolver: yupResolver(loginSchema),
   });
 
