@@ -1,12 +1,19 @@
-# Xendit
+# Xendit - Assessment
 
+This project is a technical assessment for Senior Frontend Engineer - Dashboard at Xendit.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Prerequisites
+## Getting Started
+
+### Prerequisites
 
 You'll need to have Node 12.0.0 or up. We recommend upgrading to the LTS version of NodeJS available at [https://nodejs.org/](https://nodejs.org/). You can also use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
 
 ## Quick Start
+
+### `yarn` or `npm install`
+
+To install all the dependencies needed.
 
 ### `npm start`
 
@@ -25,6 +32,21 @@ The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Running the tests
+
+Since there's not much use cases for unit tests for this project, I opted in to create a small e2e test instead.
+You can run the test with `yarn test:e2e` or `npm run test:e2e`
+
+## Built With
+
+[Typescript](https://github.com/microsoft/TypeScript) because it's 2020  
+[React Router](https://github.com/ReactTraining/react-router) to handle client side routing  
+[React Query](https://github.com/tannerlinsley/react-query) for data fetching  
+[Material UI](https://material-ui.com/) for its very complete set of components  
+[Styled Components](https://github.com/styled-components/styled-components) to extend Ant's default component styling  
+[React window](https://github.com/bvaughn/react-window) for efficiently rendering large lists of universities  
+[Cypress](https://www.cypress.io/) for end to end testing  
 
 ## Learn More
 
