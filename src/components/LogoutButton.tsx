@@ -3,7 +3,7 @@ import styled from "styled-components/macro";
 import { Power } from "react-feather";
 import { useHistory } from "react-router-dom";
 
-import { IconButton as MuiIconButton } from "@material-ui/core";
+import { IconButton as MuiIconButton, Tooltip } from "@material-ui/core";
 import { routes } from "../routes";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -24,9 +24,11 @@ function LogoutButton() {
   };
 
   return (
-    <IconButton aria-haspopup="true" onClick={handleSignOut} color="inherit">
-      <Power />
-    </IconButton>
+    <Tooltip title="Logout" aria-label="logout">
+      <IconButton aria-haspopup="true" onClick={handleSignOut} color="inherit">
+        <Power />
+      </IconButton>
+    </Tooltip>
   );
 }
 
