@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 
 import { spacing } from "@material-ui/system";
-import { v4 as uuidv4 } from "uuid";
 
 const Card = styled(MuiCard)(spacing);
 const Button = styled(MuiButton)(spacing);
@@ -26,11 +25,23 @@ type UniversityCardType = {
   domains: string[];
   country: string;
   state?: string;
+  favorited?: boolean;
+  handleAction?: () => void;
 };
 
 const UniversityCard: FC<
   UniversityCardType & { style: React.CSSProperties }
-> = ({ name, websites = [], domains = [], country, state, style }) => {
+> = (university) => {
+  const {
+    name,
+    websites = [],
+    domains = [],
+    country,
+    state,
+    handleAction,
+    favorited = false,
+    style,
+  } = university;
   return (
     <Card
       mb={6}
@@ -44,7 +55,12 @@ const UniversityCard: FC<
     >
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography
+            style={{ height: 42 }}
+            gutterBottom
+            variant="h5"
+            component="h2"
+          >
             {name}
           </Typography>
           <Typography component="p" variant="body2">
@@ -57,29 +73,26 @@ const UniversityCard: FC<
                 <Typography component="p" variant="subtitle2">
                   Domains
                 </Typography>
-                {domains.map((domain) => (
-                  <Typography key={`${domain}-${uuidv4()}`} component="p">
-                    {domain}
-                  </Typography>
-                ))}
+                <Typography component="p">{domains[0]}</Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography component="p" variant="subtitle2">
                   Websites
                 </Typography>
-                {websites.map((website) => (
-                  <Typography key={`${website}-${uuidv4()}`} component="p">
-                    {website}
-                  </Typography>
-                ))}
+                <Typography component="p">{websites[0]}</Typography>
               </Grid>
             </Grid>
           </Box>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Like
+        <Button
+          size="small"
+          color="primary"
+          variant={favorited ? "contained" : "outlined"}
+          onClick={handleAction}
+        >
+          {favorited ? "Unfav" : "Fav"}
         </Button>
       </CardActions>
     </Card>

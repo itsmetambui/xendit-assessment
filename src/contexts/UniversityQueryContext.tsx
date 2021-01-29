@@ -1,6 +1,4 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { routes } from "../routes";
 
 const UniversityQueryContext = React.createContext<{
   searchTerm: string;
@@ -11,16 +9,10 @@ const UniversityQueryContext = React.createContext<{
 });
 
 const UniversityQueryProvider = (props: Object) => {
-  const location = useLocation();
-  const history = useHistory();
-  console.log(location.pathname);
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleUniversitiesSearch = (term: string) => {
     setSearchTerm(term);
-    if (location.pathname !== routes.HOME) {
-      history.push(routes.HOME);
-    }
   };
 
   return (

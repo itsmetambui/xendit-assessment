@@ -19,6 +19,7 @@ import theme from "./theme";
 import Routes from "./routes/Routes";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UniversityQueryProvider } from "./contexts/UniversityQueryContext";
+import { FavoriteUniversitiesProvider } from "./contexts/FavoriteContext";
 
 const jss = create({
   ...jssPreset(),
@@ -40,7 +41,9 @@ function App() {
                   <AuthProvider>
                     <Router>
                       <UniversityQueryProvider>
-                        <Routes />
+                        <FavoriteUniversitiesProvider>
+                          <Routes />
+                        </FavoriteUniversitiesProvider>
                       </UniversityQueryProvider>
                     </Router>
                   </AuthProvider>

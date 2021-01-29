@@ -14,6 +14,7 @@ import { routes } from "../../routes";
 import { searchUniversities } from "../../utils/api";
 import { useUniversityQuery } from "../../contexts/UniversityQueryContext";
 import { useDebounce, useResponsiveColumns } from "../../utils/hooks";
+import { useFavoriteUniversities } from "../../contexts/FavoriteContext";
 
 function HomePage() {
   const numberOfColumns = useResponsiveColumns();
@@ -23,6 +24,7 @@ function HomePage() {
     ["universities", debouncedSearchTerm],
     () => searchUniversities(debouncedSearchTerm, "")
   );
+  const { favoriteUniversities, toggleFavorite } = useFavoriteUniversities();
 
   if (error) {
     return <Redirect to={routes.PAGE_ERROR_500} />;
@@ -64,7 +66,7 @@ function HomePage() {
           height={height}
           rowCount={Math.ceil(universities.length / numberOfColumns)}
           overscanRowCount={3}
-          rowHeight={192}
+          rowHeight={216}
           width={width}
         >
           {({ columnIndex, rowIndex, style }) => {
@@ -77,6 +79,12 @@ function HomePage() {
                 state={university.state}
                 websites={university.web_pages}
                 domains={university.domains}
+                favorited={favoriteUniversities.some(
+                  (fav) =>
+                    fav.name === university.name &&
+                    fav.country === university.country
+                )}
+                handleAction={() => toggleFavorite(university)}
                 style={style}
               />
             ) : null;
